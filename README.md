@@ -13,8 +13,10 @@ _Summary by Hannes Fasching, OE5JFL oe5jfl(at)aon.at_
 
 ## Installation of the distribution
 * First of all get the link for downloading the ISO file (2GB) from Andrea or me (OE5JFL)
-* make a bootable USB stick using any tool that permit it, `dd` if you are on linux or [rufus](https://rufus.akeo.ie/) if you are on windows; here's an example configuration of rufus:  ![rufus](img/001.png)
-* once the process is finished you should see these files on the stick: ![files](img/002.png)
+* make a bootable USB stick using any tool that permit it, `dd` if you are on linux or [rufus](https://rufus.akeo.ie/) if you are on windows; here's an example configuration of rufus:  
+![rufus](img/001.png)
+* once the process is finished you should see these files on the stick:  
+![files](img/002.png)
 * boot from the stick you have flashed changing the boot priority in the BIOS of your system (for most of modern PCs this is done automatically)
 * once the bootloader (`grub`) shows up select the first option (`run linux`)
 * if you want to install the OS onto your PC run `ubiquity` tool by double-clicking the `install` icon on the Desktop
