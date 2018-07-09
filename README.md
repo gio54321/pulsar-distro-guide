@@ -6,9 +6,11 @@ _Summary by Hannes Fasching, OE5JFL oe5jfl(at)aon.at_
 ### Table of contents
 * Installation of the distribution
 * First boot setup
+* Supported SDRs
 * Testing out the SDR dongle
 * Recording
 * Conversion
+* Setting up Tempo
 * Analysis
 
 ## Installation of the distribution
@@ -64,15 +66,17 @@ and wait the tool to start.
 * __ACQ Time (s)__ - length of acquisition in seconds
 * __Sample rate__ - sample rate with the model of SDR dongle
 * __SR Time series__ - sample rate of the time series (2KSPS is fine for B0329+54)
-* __Num chan__ - number of channels
-* __Frequency__ - center frequency of acquisition
-* __RF gain__ -
-* __IF gain__ -
-* __BB gain__ -
-* __DIG gain__ -
+* __Num chan__ - number of channels (25 is fine for B0329+54)
+* __Frequency__ - center frequency of the acquisition
+* __RF gain__ - gain of the RF stage of the dongle (supported by all the dongles)
+* __IF gain__ - gain of the intermediate frequency stage of the dongle (supported by Airspy and HackRf only)
+* __BB gain__ - gain of the base band stage of the dongle (supported by HackRf only)
+* __DIG gain__ - software digital gain (2 is fine for most cases)
 * __Filename__ - file name to write on (you can select the folder first then change the name of the file)
 > Keep in mind that `PulsarData` folder on Desktop is supposed to contain the acquisitions files, however you can place them wherever you want
 * __Start now / Start time__ - you can choose to start now the recording or set a date/time scheudle
+
+> To change default values for the input fields edit `default.conf.xml` in the `Recording/REC_GUI` folder
 
 Once the recording is started you should see the _I/Q cloud_ and the _power per channel_ graphs.
 
@@ -81,8 +85,8 @@ Once the recording is started you should see the _I/Q cloud_ and the _power per 
 Make sure that the I/Q cloud is neither too small or saturated (it should be approximately like in the picture above). If it's not, tweack the RF/IF/BB gains until you reach a good I/Q amplitude (see above).
 
 ## Conversion
-When the recording is complete you have to convert the _.bin_ file to a _.fil_ file (format that is used by professional pulsar hunting softwares).  
-In order to do that there is another graphical tool to do it: just type in the terminal
+When the recording is complete you have to convert the _.bin_ file to a _.fil_ file (format that is used by professional pulsar analysis softwares like presto or sigproc).  
+In order to do that just type in the terminal
 ```
 bin2fil
 ```
@@ -90,12 +94,25 @@ and again set the values of the conversion so that they're coherent with the val
 
 ![bin2fil](img/007.png)
 
-The filters value are calculated approximately by the formulas
+* __CONVStart / CONVLength__ - the tool will convert from CONVStart CONVLength seconds
+* __Ampli__ - scale factor (tweack until you get few % of saturation)
+* __FILT_H / FILT_L__ - The filters value are calculated approximately by the formulas
 ```
 FILT_H ~ 600/(pulse width of pulsar) (ms)
 FILT_L ~ (pulsar frequency)/20 up to (pulsar frequency)/10
 ```
-Tweak the `Ampli` value until you get a few % of saturation (shown in `% SAT`).
+* __Source Name__ - name of the pulsar (written in _.fil_ header)
+* __Source DEC__ - declination of the pulsar (written in _.fil_ header)
+* __Source RA__ - right ascension of the pulsar (written in _.fil_ header)
+* __Center Frequency__ - center frequency on the acquisition (written in _.fil_ header)
+* __SR__ - sample rate of the acquisition (written in _.fil_ header)
+* __SRerror__ - frequency error in ppm of the dongle
+* __SR Time Series__ - sample rate of the time series (written in _.fil_ header)
+* __Channels__ - number of channels (written in _.fil_ header)
+
+All the values that are written in the _.fil_ header must be consistent with the recording values.
+> To change default values for the input fields edit `default.conf.xml` in the `Conversion` folder
+
 ## Setting up Tempo
 > Tempo is a program for the analysis of pulsar timing data. Pulsar rotation, astrometric, and binary parameters are deduced by fitting models to pulse times of arrival measured at one or more terrestrial observatories. ([more info](http://tempo.sourceforge.net/))
 
